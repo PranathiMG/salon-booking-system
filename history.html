@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Booking History</title>
+</head>
+
+<body>
+
+<h2>{{name}} Booking History</h2>
+
+<ul>
+
+{% for b in bookings %}
+
+<li>
+
+{{b.service}} - {{b.staff}} - {{b.slot}} - ₹{{b.amount}}
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+</body>
+</html>
+

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Men's Services | Glow & Grace</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #d9b99b;
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+            --glass: rgba(15, 23, 42, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            color: #d1d5db; 
+            background: linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.85)), 
+                        url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2000');
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 15px 50px;
+            display: flex; align-items: center;
+            background: rgba(2, 6, 23, 0.98); z-index: 1000; 
+            border-bottom: 1px solid rgba(217, 185, 155, 0.3);
+        }
+        .brand-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--primary); }
+
+        .container { width: 90%; margin: auto; padding-bottom: 50px; }
+        .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+
+        /* --- CARDS --- */
+        .card { background: var(--glass); padding: 25px; border-radius: 12px; border: 1px solid rgba(217, 185, 155, 0.1); text-align: center; transition: 0.4s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card h3 { font-family: 'Playfair Display'; color: white; font-size: 18px; margin-bottom: 8px; }
+        .card p { color: var(--primary); font-weight: bold; font-size: 16px; margin-bottom: 15px; }
+        .btn-book { padding: 8px 20px; border-radius: 20px; background: var(--primary); color: var(--black); border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; transition: 0.3s; }
+        .btn-book:hover { background: white; transform: scale(1.05); }
+
+        /* --- AI COMPACT SECTION --- */
+        .style-matcher-box {
+            background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--primary);
+            text-align: center; backdrop-filter: blur(15px); max-width: 550px; margin: 0 auto 50px;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; }
+
+        /* Camera View */
+        #video-container { 
+            position: relative; width: 250px; height: 250px; margin: 15px auto; 
+            border-radius: 15px; overflow: hidden; border: 2px solid var(--primary);
+            background: #000;
+        }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .scanning-line {
+            width: 100%; height: 3px; background: var(--primary);
+            position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--primary);
+            animation: scan 2s linear infinite; display: none;
+        }
+        @keyframes scan { 0% { top: 0; } 50% { top: 250px; } 100% { top: 0; } }
+
+        /* --- LIVE REVIEWS SLIDER --- */
+        .review-section { margin-top: 40px; text-align: center; }
+        .review-carousel {
+            max-width: 700px; margin: 20px auto; overflow: hidden; position: relative;
+            background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px;
+        }
+        .review-slide { display: none; font-style: italic; color: var(--primary); font-size: 14px; animation: slideIn 0.8s ease; }
+        .review-slide.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Modal styling */
+        #policyModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-box { background: var(--navy); padding: 30px; border-radius: 15px; width: 400px; border: 1px solid var(--primary); text-align: center; }
+        
+        .policy-banner { 
+            background: rgba(217, 185, 155, 0.1); 
+            padding: 12px; border-radius: 8px; margin: 15px 0; 
+            font-size: 11px; text-align: left; border-left: 3px solid var(--primary);
+        }
+
+        .modal-box input, .modal-box select { width: 100%; padding: 10px; margin-top: 10px; background: black; color: white; border: 1px solid rgba(217, 185, 155, 0.3); border-radius: 5px; }
+    </style>
+</head>
+
+<body>
+
+    <nav><div class="brand-name">GLOW & GRACE MEN</div></nav>
+
+    <div class="container">
+        
+        <div class="style-matcher-box" id="matcherBox" data-aos="zoom-in">
+            
+            <div class="step active" id="step1">
+                <h3 style="font-family:'Playfair Display'; font-size:22px; color:white;">AI Style Consultant</h3>
+                <p style="margin: 5px 0 15px; color:#94a3b8; font-size: 12px;">Discover the best cut for your face structure.</p>
+                <button class="btn-book" onclick="openCamera()">Launch Live Scanner</button>
+            </div>
+
+            <div class="step" id="step2">
+                <h3 style="font-family:'Playfair Display'; color:white; font-size: 18px;">Analyzing Features</h3>
+                <div id="video-container">
+                    <video id="webcam" autoplay playsinline></video>
+                    <div class="scanning-line" id="scanLine"></div>
+                </div>
+                <button class="btn-book" id="scanBtn" onclick="runAnalysis()">Initiate Scan</button>
+            </div>
+
+            <div class="step" id="step3">
+                <i class="fas fa-crown" style="color:var(--primary); font-size:25px; margin-bottom:10px;"></i>
+                <h3 style="font-family:'Playfair Display'; color:white; font-size: 18px;">Artisan Recommendation</h3>
+                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin:15px 0; border-left:4px solid var(--primary);">
+                    <p id="aiResultText" style="font-style:italic; color:#cbd5e1; font-size: 13px;"></p>
+                </div>
+                <button class="btn-book" onclick="bookAI()">Book This Transformation</button>
+            </div>
+
+        </div>
+
+        <div class="services" id="services"></div>
+
+        <div class="review-section" data-aos="fade-up">
+            <h3 style="font-family: 'Playfair Display'; color: var(--white);">Guest Feedback</h3>
+            <div class="review-carousel" id="reviewCarousel">
+                <div class="review-slide active">"The Sharp Fade was precise. Kiran is definitely a master of his craft." - <b>Rahul M.</b></div>
+                <div class="review-slide">"Elite atmosphere and great service. The head massage is a must-try." - <b>Vikram S.</b></div>
+                <div class="review-slide">"Clean, professional, and on-time. Best salon for men in the city." - <b>Sameer K.</b></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="policyModal">
+        <div class="modal-box">
+            <h3 id="serviceTitle" style="color: var(--primary); font-family: 'Playfair Display';"></h3>
+            
+            <div class="policy-banner">
+                <strong style="color:var(--primary);">OFFICIAL POLICY:</strong><br>
+                • Booking Fee: <b>₹200</b><br>
+                • On-Time Reward: <b>₹160 (80%)</b> adjusted in bill.<br>
+                • Missed Slot: <b>No refund policy applies.</b>
+            </div>
+
+            <select id="staff">
+                <option>Kiran (Master Barber)</option>
+                <option>Rahul (Senior Stylist)</option>
+                <option>Ajay (Skincare Expert)</option>
+            </select>
+            <input type="date" id="date">
+            <select id="slot"></select>
+            <button class="btn-book" style="width:100%; margin-top:20px;" onclick="confirmBooking()">Pay ₹200 & Secure Slot</button>
+            <button onclick="document.getElementById('policyModal').style.display='none'" style="background:transparent; color:#ff4d4d; border:none; margin-top:10px; cursor:pointer; font-size:11px;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const services = [
+            {name:"Professional Haircut", price:200}, {name:"Beard Shape & Trim", price:150},
+            {name:"Luxury Shave", price:120}, {name:"Refreshing Facial", price:400},
+            {name:"Hair Spa Treatment", price:350}, {name:"Hair Coloring", price:500},
+            {name:"Relaxing Head Massage", price:250}, {name:"Face De-Tan", price:300},
+            {name:"Classic Pedicure", price:450}
+        ];
+
+        const grid = document.getElementById("services");
+        services.forEach(s => {
+            grid.innerHTML += `<div class="card"><h3>${s.name}</h3><p>₹${s.price}</p><button class="btn-book" onclick="openModal('${s.name}', ${s.price})">Book Now</button></div>`;
+        });
+
+        // CAMERA LOGIC
+        const video = document.getElementById('webcam');
+        async function openCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                goToStep(2);
+            } catch (err) { alert("Camera access denied."); }
+        }
+
+        function runAnalysis() {
+            document.getElementById('scanLine').style.display = "block";
+            document.getElementById('scanBtn').innerText = "Scanning Scalp & Face...";
+            
+            const results = [
+                "Suggested: 'The Artisan Fade' to match your angular jawline.",
+                "Suggested: 'Beard Sculpting' with a 'Refreshing Facial' for the weekend.",
+                "Suggested: 'Textured Crop' with 'Face De-Tan' for a modern look."
+            ];
+
+            setTimeout(() => {
+                document.getElementById('aiResultText').innerText = results[Math.floor(Math.random() * results.length)];
+                goToStep(3);
+                const stream = video.srcObject;
+                stream.getTracks().forEach(track => track.stop());
+            }, 3000);
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        function bookAI() { openModal("AI Recommended Cut", "Special Rate"); }
+
+        // REVIEWS
+        let curReview = 0;
+        const slides = document.querySelectorAll('.review-slide');
+        setInterval(() => {
+            slides[curReview].classList.remove('active');
+            curReview = (curReview + 1) % slides.length;
+            slides[curReview].classList.add('active');
+        }, 4000);
+
+        // MODAL
+        function openModal(service, price) {
+            document.getElementById("serviceTitle").innerText = service + " - ₹" + price;
+            const slotSelect = document.getElementById("slot");
+            slotSelect.innerHTML = "";
+            for (let hour = 10; hour <= 21; hour++) {
+                slotSelect.innerHTML += `<option>${hour > 12 ? hour-12 : hour}:00 ${hour >= 12 ? 'PM':'AM'}</option>`;
+                slotSelect.innerHTML += `<option>${hour > 12 ? hour-12 : hour}:30 ${hour >= 12 ? 'PM':'AM'}</option>`;
+            }
+            document.getElementById("policyModal").style.display = "flex";
+        }
+
+        function confirmBooking() {
+            localStorage.setItem("selectedService", document.getElementById("serviceTitle").innerText);
+            window.location.href = "/booking";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Reviews | Glow & Grace</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #d9b99b; /* Rose Gold */
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+            --glass: rgba(15, 23, 42, 0.85);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            color: #d1d5db; 
+            background: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.8)), 
+                        url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=2000');
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; align-items: center;
+            background: rgba(2, 6, 23, 0.98); z-index: 1000; 
+            border-bottom: 1px solid rgba(217, 185, 155, 0.3);
+        }
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 7px; z-index: 1100; margin-right: 30px; }
+        .menu-btn span { display: block; width: 30px; height: 2px; background: var(--primary); transition: 0.4s; }
+        .side-nav { position: fixed; top: 0; left: -100%; width: 320px; height: 100vh; background: var(--black); z-index: 1050; transition: 0.5s; display: flex; flex-direction: column; padding: 120px 50px; gap: 20px; box-shadow: 20px 0 50px rgba(0,0,0,0.8); border-right: 1px solid var(--primary); }
+        .side-nav.active { left: 0; }
+        .side-nav a { text-decoration: none; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; }
+        .brand-name { font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 2px; font-weight: 700; color: var(--primary); }
+
+        /* --- LAYOUT --- */
+        .container { max-width: 900px; margin: auto; padding: 0 20px 80px; }
+        .stats-card { background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--primary); text-align: center; margin-bottom: 30px; backdrop-filter: blur(10px); }
+        .rating-num { font-size: 48px; font-family: 'Playfair Display'; color: var(--white); }
+        
+        .card { background: var(--glass); padding: 40px; border-radius: 20px; border: 1px solid rgba(217, 185, 155, 0.2); margin-bottom: 30px; }
+
+        /* --- STAR RATING --- */
+        .star-input { font-size: 24px; color: #444; cursor: pointer; display: flex; gap: 5px; justify-content: center; margin-bottom: 15px; }
+        .star-input i.active { color: var(--primary); }
+
+        input, textarea { width: 100%; padding: 14px; margin-bottom: 15px; background: var(--black); border: 1px solid rgba(217, 185, 155, 0.3); border-radius: 8px; color: white; outline: none; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: var(--black); border: none; border-radius: 8px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.4s; }
+        button:hover { background: var(--white); transform: translateY(-3px); }
+
+        /* --- REVIEW FEED --- */
+        .review-item { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 3px solid var(--primary); transition: 0.3s; }
+        .review-item:hover { background: rgba(255,255,255,0.05); }
+        .review-item h4 { font-family: 'Playfair Display'; font-size: 18px; color: var(--white); display: flex; justify-content: space-between; align-items: center; }
+        .stars-display { color: var(--primary); font-size: 12px; }
+        .review-item small { color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .review-item p { margin-top: 10px; font-size: 14px; line-height: 1.6; font-style: italic; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="brand-name">GLOW & GRACE</div>
+    </nav>
+
+    <div class="side-nav" id="sideNav">
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/men_services">Men's Grooming</a>
+        <a href="/women_services">Women's Beauty</a>
+        <a href="/contact">Contact</a>
+        <a href="/review">Reviews</a>
+    </div>
+
+    <div class="container">
+        <div class="stats-card" data-aos="fade-down">
+            <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 12px; color: var(--primary);">Overall Excellence</p>
+            <div class="rating-num" id="avgRating">0.0</div>
+            <div class="stars-display" id="avgStars" style="font-size: 20px;"></div>
+            <p style="margin-top: 5px; font-size: 13px; color: #94a3b8;" id="totalCount">0 Verified Reviews</p>
+        </div>
+
+        <div class="card" data-aos="fade-up">
+            <h2 style="font-family: 'Playfair Display'; margin-bottom: 20px; text-align: center;">Share Your Experience</h2>
+            
+            <div class="star-input" id="starInput">
+                <i class="fas fa-star" data-value="1"></i>
+                <i class="fas fa-star" data-value="2"></i>
+                <i class="fas fa-star" data-value="3"></i>
+                <i class="fas fa-star" data-value="4"></i>
+                <i class="fas fa-star" data-value="5"></i>
+            </div>
+
+            <input type="text" id="custName" placeholder="Full Name">
+            <input type="email" id="custEmail" placeholder="Email Address">
+            <textarea id="custReview" rows="4" placeholder="How was your session at Glow & Grace?"></textarea>
+            
+            <button onclick="submitReview()">Submit Review</button>
+            <p id="msg" style="margin-top: 15px; text-align: center; font-size: 13px;"></p>
+        </div>
+
+        <div id="reviewList"></div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        function toggleMenu() { document.getElementById("sideNav").classList.toggle("active"); }
+
+        let reviews = JSON.parse(localStorage.getItem('customerReviews') || '[]');
+        let currentRating = 0;
+
+        // Star Selection Logic
+        const stars = document.querySelectorAll('#starInput i');
+        stars.forEach(s => {
+            s.addEventListener('click', function() {
+                currentRating = this.getAttribute('data-value');
+                updateStarUI(currentRating);
+            });
+            s.addEventListener('mouseover', function() {
+                updateStarUI(this.getAttribute('data-value'));
+            });
+        });
+
+        document.getElementById('starInput').addEventListener('mouseleave', () => updateStarUI(currentRating));
+
+        function updateStarUI(val) {
+            stars.forEach(s => {
+                s.classList.toggle('active', s.getAttribute('data-value') <= val);
+            });
+        }
+
+        function submitReview() {
+            let name = document.getElementById('custName').value.trim();
+            let email = document.getElementById('custEmail').value.trim();
+            let reviewText = document.getElementById('custReview').value.trim();
+
+            if(!name || !reviewText || currentRating == 0){
+                let msg = document.getElementById('msg');
+                msg.innerText = 'Please select a rating and fill all fields.';
+                msg.style.color = '#ff4d4d';
+                return;
+            }
+
+            reviews.unshift({name, email, reviewText, rating: currentRating, date: new Date().toLocaleDateString()});
+            localStorage.setItem('customerReviews', JSON.stringify(reviews));
+
+            // Reset
+            document.getElementById('custName').value='';
+            document.getElementById('custEmail').value='';
+            document.getElementById('custReview').value='';
+            currentRating = 0;
+            updateStarUI(0);
+            
+            let msg = document.getElementById('msg');
+            msg.innerText = 'Thank you for your elegant feedback. ✨';
+            msg.style.color = 'var(--primary)';
+
+            renderReviews();
+        }
+
+        function renderReviews() {
+            let list = document.getElementById('reviewList');
+            list.innerHTML = '';
+            
+            let totalRating = 0;
+            reviews.forEach(r => {
+                totalRating += parseInt(r.rating);
+                let starIcons = '<i class="fas fa-star"></i>'.repeat(r.rating) + '<i class="far fa-star"></i>'.repeat(5 - r.rating);
+                
+                list.innerHTML += `
+                <div class="review-item" data-aos="fade-up">
+                    <h4>${r.name} <span class="stars-display">${starIcons}</span></h4>
+                    <small>${r.date}</small>
+                    <p>"${r.reviewText}"</p>
+                </div>
+                `;
+            });
+
+            // Update Stats
+            if(reviews.length > 0) {
+                let avg = (totalRating / reviews.length).toFixed(1);
+                document.getElementById('avgRating').innerText = avg;
+                document.getElementById('avgStars').innerHTML = '<i class="fas fa-star"></i>'.repeat(Math.round(avg));
+                document.getElementById('totalCount').innerText = `${reviews.length} Verified Reviews`;
+            }
+        }
+
+        renderReviews();
+    </script>
+</body>
+</html>

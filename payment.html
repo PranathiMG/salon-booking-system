@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Glow & Grace</title>
+    
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #d9b99b; /* Rose Gold */
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+            --glass: rgba(15, 23, 42, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.85)), 
+                        url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+            padding: 40px 20px;
+        }
+
+        /* --- PAYMENT CARD --- */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(217, 185, 155, 0.2);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            text-align: center;
+            z-index: 2;
+        }
+
+        .shield-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(217, 185, 155, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 28px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(217, 185, 155, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(217, 185, 155, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(217, 185, 155, 0); }
+        }
+
+        h2 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 5px; }
+        .tagline { color: var(--primary); font-size: 11px; text-transform: uppercase; letter-spacing: 4px; display: block; margin-bottom: 30px; }
+
+        /* --- RECEIPT DETAILS --- */
+        .receipt {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+
+        .label { color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .value { color: var(--white); font-weight: 600; font-size: 14px; }
+        .total-label { color: var(--primary); font-weight: 700; font-size: 18px; }
+        .total-value { color: var(--white); font-weight: 700; font-size: 22px; }
+
+        /* --- BUTTONS --- */
+        .pay-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .pay-btn:hover { background: var(--white); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(217, 185, 155, 0.3); }
+
+        /* --- NEW ATTRACTIVE PERKS SECTION --- */
+        .perks-section {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .perk-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(217, 185, 155, 0.1);
+            transition: 0.3s;
+        }
+
+        .perk-item:hover { background: rgba(217, 185, 155, 0.1); transform: scale(1.05); }
+
+        .perk-item i { color: var(--primary); font-size: 24px; margin-bottom: 10px; display: block; }
+        .perk-item span { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #d1d5db; }
+
+        /* --- TRUST BADGES --- */
+        .trust-badges {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            opacity: 0.6;
+        }
+        .trust-badges i { font-size: 20px; }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container" data-aos="zoom-in">
+        <div class="shield-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        
+        <h2>Finalize Booking</h2>
+        <span class="tagline">Encrypted Checkout</span>
+
+        <div class="receipt">
+            <div class="receipt-row">
+                <span class="label">Client Name</span>
+                <span class="value" id="cname">---</span>
+            </div>
+            <div class="receipt-row">
+                <span class="label">Luxury Service</span>
+                <span class="value" id="service">---</span>
+            </div>
+            <div class="receipt-row">
+                <span class="label">Assigned Artisan</span>
+                <span class="value" id="staff">---</span>
+            </div>
+            <div class="receipt-row">
+                <span class="label">Scheduled Time</span>
+                <span class="value" id="time">---</span>
+            </div>
+            <div class="receipt-row" style="margin-top: 20px; border-top: 1px dashed var(--primary); padding-top: 15px;">
+                <span class="total-label">Amount Payable</span>
+                <span class="total-value">₹<span id="amount">0.00</span></span>
+            </div>
+        </div>
+
+        <button class="pay-btn" onclick="payNow()">
+            <i class="fas fa-lock"></i> Authorize & Pay
+        </button>
+
+        <a href="/" style="display:block; margin-top:20px; color:#64748b; text-decoration:none; font-size:12px;">Cancel & Return Home</a>
+    </div>
+
+    <div class="perks-section" data-aos="fade-up" data-aos-delay="200">
+        <div class="perk-item">
+            <i class="fas fa-mug-hot"></i>
+            <span>Free Brew Lounge Access</span>
+        </div>
+        <div class="perk-item">
+            <i class="fas fa-crown"></i>
+            <span>VIP Priority Entry</span>
+        </div>
+        <div class="perk-item">
+            <i class="fas fa-coins"></i>
+            <span>100 Loyalty Credits</span>
+        </div>
+    </div>
+
+    <div class="trust-badges" data-aos="fade-up" data-aos-delay="400">
+        <div style="display:flex; align-items:center; gap:8px;"><i class="fas fa-check-circle"></i><small>SSL SECURED</small></div>
+        <div style="display:flex; align-items:center; gap:8px;"><i class="fab fa-razorpay"></i><small>RAZORPAY VERIFIED</small></div>
+        <div style="display:flex; align-items:center; gap:8px;"><i class="fas fa-thumbs-up"></i><small>100% QUALITY</small></div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        // Retrieve stored booking data
+        const customer = localStorage.getItem("customer") || "Elite Client";
+        const service = localStorage.getItem("selectedService") || localStorage.getItem("service") || "Signature Session";
+        const staff = localStorage.getItem("staff") || "Master Stylist";
+        const time = localStorage.getItem("time") || "TBD";
+        const amount = localStorage.getItem("selectedPrice") || localStorage.getItem("amount") || "0";
+
+        // Display data
+        document.getElementById("cname").innerText = customer;
+        document.getElementById("service").innerText = service;
+        document.getElementById("staff").innerText = staff;
+        document.getElementById("time").innerText = time;
+        document.getElementById("amount").innerText = amount;
+
+        async function payNow() {
+            const btn = document.querySelector('.pay-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment...';
+            btn.disabled = true;
+
+            try {
+                // In a real project, this calls your backend to create a Razorpay order
+                let response = await fetch("/create_order"); 
+                let order = await response.json();
+
+                var options = {
+                    key: "rzp_test_SPAZS8RUI3LyK3", // Use your Test Key
+                    amount: order.amount,
+                    currency: "INR",
+                    name: "Glow & Grace",
+                    description: "Luxury Service Confirmation",
+                    theme: { color: "#d9b99b" },
+                    order_id: order.id,
+                    handler: async function (response) {
+                        // On Success
+                        await fetch("/payment-success", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                customer, service, staff, time, amount,
+                                payment_id: response.razorpay_payment_id
+                            })
+                        });
+                        window.location.href = "/success";
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            btn.innerHTML = '<i class="fas fa-lock"></i> Authorize & Pay';
+                            btn.disabled = false;
+                        }
+                    }
+                };
+                var rzp = new Razorpay(options);
+                rzp.open();
+            } catch (error) {
+                // For demo/frontend-only testing, use this:
+                setTimeout(() => {
+                    alert("Order created! (Backend integration pending)");
+                    btn.innerHTML = '<i class="fas fa-lock"></i> Authorize & Pay';
+                    btn.disabled = false;
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

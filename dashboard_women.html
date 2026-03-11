@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women's Services | Glow & Grace</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #d9b99b;
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+            --glass: rgba(15, 23, 42, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            color: #d1d5db; 
+            background: linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.85)), 
+                        url('https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=2000');
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 15px 50px;
+            display: flex; align-items: center;
+            background: rgba(2, 6, 23, 0.98); z-index: 1000; 
+            border-bottom: 1px solid rgba(217, 185, 155, 0.3);
+        }
+        .brand-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--primary); }
+
+        .container { width: 90%; margin: auto; padding-bottom: 50px; }
+        .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+
+        /* --- CARDS --- */
+        .card { background: var(--glass); padding: 25px; border-radius: 12px; border: 1px solid rgba(217, 185, 155, 0.1); text-align: center; transition: 0.4s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card h3 { font-family: 'Playfair Display'; color: white; font-size: 18px; margin-bottom: 8px; }
+        .card p { color: var(--primary); font-weight: bold; font-size: 16px; margin-bottom: 15px; }
+        .btn-book { padding: 8px 20px; border-radius: 20px; background: var(--primary); border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; transition: 0.3s; }
+        .btn-book:hover { background: white; color: var(--black); transform: scale(1.05); }
+
+        /* --- AI COMPACT SECTION --- */
+        .style-matcher-box {
+            background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--primary);
+            text-align: center; backdrop-filter: blur(15px); max-width: 550px; margin: 0 auto 50px;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; }
+
+        /* Camera View */
+        #video-container { 
+            position: relative; width: 250px; height: 250px; margin: 15px auto; 
+            border-radius: 50%; overflow: hidden; border: 2px solid var(--primary);
+            background: #000;
+        }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .scanning-line {
+            width: 100%; height: 3px; background: var(--primary);
+            position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--primary);
+            animation: scan 2s linear infinite; display: none;
+        }
+        @keyframes scan { 0% { top: 0; } 50% { top: 250px; } 100% { top: 0; } }
+
+        /* --- LIVE REVIEWS SLIDER --- */
+        .review-section { margin-top: 40px; text-align: center; }
+        .review-carousel {
+            max-width: 700px; margin: 20px auto; overflow: hidden; position: relative;
+            background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px;
+        }
+        .review-slide { display: none; font-style: italic; color: var(--primary); font-size: 14px; animation: slideIn 0.8s ease; }
+        .review-slide.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* --- MODAL & POLICY --- */
+        #policyModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-box { background: var(--navy); padding: 30px; border-radius: 15px; width: 420px; border: 1px solid var(--primary); text-align: center; }
+        
+        .policy-banner { 
+            background: rgba(217, 185, 155, 0.1); 
+            padding: 12px; border-radius: 8px; margin: 15px 0; 
+            font-size: 11px; text-align: left; border-left: 3px solid var(--primary);
+            color: #d1d5db; line-height: 1.5;
+        }
+
+        .modal-box input, .modal-box select { width: 100%; padding: 10px; margin-top: 10px; background: black; color: white; border: 1px solid rgba(217, 185, 155, 0.3); border-radius: 5px; outline: none; }
+    </style>
+</head>
+
+<body>
+
+    <nav><div class="brand-name">GLOW & GRACE</div></nav>
+
+    <div class="container">
+        
+        <div class="style-matcher-box" id="matcherBox" data-aos="zoom-in">
+            
+            <div class="step active" id="step1">
+                <h3 style="font-family:'Playfair Display'; font-size:24px; color:white;">Bespoke Look Finder</h3>
+                <p style="margin: 5px 0 15px; color:#94a3b8; font-size: 12px;">AI analysis for your next transformation.</p>
+                <button class="btn-book" onclick="openCamera()">Open Live Scanner</button>
+            </div>
+
+            <div class="step" id="step2">
+                <h3 style="font-family:'Playfair Display'; color:white; font-size: 18px;">Analyzing Facial Contours</h3>
+                <div id="video-container">
+                    <video id="webcam" autoplay playsinline></video>
+                    <div class="scanning-line" id="scanLine"></div>
+                </div>
+                <button class="btn-book" id="scanBtn" onclick="runAnalysis()">Initiate Scan</button>
+            </div>
+
+            <div class="step" id="step3">
+                <i class="fas fa-magic" style="color:var(--primary); font-size:25px; margin-bottom:10px;"></i>
+                <h3 style="font-family:'Playfair Display'; color:white; font-size: 18px;">Recommended for You</h3>
+                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin:15px 0; border-left:4px solid var(--primary);">
+                    <p id="aiResultText" style="font-style:italic; color:#cbd5e1; font-size: 13px;"></p>
+                </div>
+                <button class="btn-book" onclick="bookAI()">Reserve This Look</button>
+            </div>
+
+        </div>
+
+        <div class="services" id="servicesContainer"></div>
+
+        <div class="review-section" data-aos="fade-up">
+            <h3 style="font-family: 'Playfair Display'; color: var(--white);">Client Stories</h3>
+            <div class="review-carousel" id="reviewCarousel">
+                <div class="review-slide active">"The signature styling completely changed my confidence. Elena is a magician!" - <b>Meera K.</b></div>
+                <div class="review-slide">"Best facial in the city. My skin has never felt so hydrated and fresh." - <b>Anjali S.</b></div>
+                <div class="review-slide">"The bridal package was worth every rupee. Flawless makeup." - <b>Sneha R.</b></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="policyModal">
+        <div class="modal-box">
+            <h3 id="serviceTitle" style="color: var(--primary); font-family: 'Playfair Display';"></h3>
+            
+            <div class="policy-banner">
+                <strong style="color:var(--primary);">ELITE BOOKING POLICY:</strong><br>
+                • Booking Fee: <b>₹200</b> (Mandatory)<br>
+                • On-Time Reward: <b>₹160 (80%)</b> adjusted in bill.<br>
+                • Missed Slot: <b>No refund policy strictly applies.</b>
+            </div>
+
+            <select id="staff">
+                <option>Elena (Creative Director)</option>
+                <option>Sofia (Senior Stylist)</option>
+                <option>Maya (Skincare Expert)</option>
+            </select>
+            <input type="date" id="date">
+            <select id="slot"></select>
+            <button class="btn-book" style="width:100%; margin-top:20px;" onclick="confirmBooking()">Confirm & Pay ₹200</button>
+            <button onclick="document.getElementById('policyModal').style.display='none'" style="background:transparent; color:#ff4d4d; border:none; margin-top:10px; cursor:pointer; font-size:11px;">Dismiss</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const services = [
+            {name:'Precision Haircut', price:400}, {name:'Deep Conditioning Wash', price:200},
+            {name:'Signature Styling', price:500}, {name:'Silk Straightening', price:2000},
+            {name:'Organic Smoothening', price:2500}, {name:'Couture Coloring', price:1500},
+            {name:'Ozone Hair Spa', price:1200}, {name:'Radiance Facial', price:1000},
+            {name:'Ultra Cleanup', price:700}, {name:'Herbal Bleach', price:600},
+            {name:'Precision Threading', price:100}, {name:'Honey Waxing', price:900},
+            {name:'Spa Manicure', price:600}, {name:'Spa Pedicure', price:700},
+            {name:'Elite Bridal Makeup', price:5000}, {name:'Luxury Nail Artistry', price:800}
+        ];
+
+        const container = document.getElementById("servicesContainer");
+        services.forEach(s => {
+            container.innerHTML += `<div class="card"><h3>${s.name}</h3><p>₹${s.price}</p><button class="btn-book" onclick="openModal('${s.name}', ${s.price})">Book Now</button></div>`;
+        });
+
+        // CAMERA LOGIC
+        const video = document.getElementById('webcam');
+        async function openCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                goToStep(2);
+            } catch (err) { alert("Please enable camera for the AI Scanner."); }
+        }
+
+        function runAnalysis() {
+            document.getElementById('scanLine').style.display = "block";
+            document.getElementById('scanBtn').innerText = "Analyzing Face Shape...";
+            
+            const results = [
+                "Recommended: 'Radiance Facial' to highlight your bone structure.",
+                "Recommended: 'Signature Styling' with soft waves for your face shape.",
+                "Recommended: 'Organic Smoothening' to enhance hair texture."
+            ];
+
+            setTimeout(() => {
+                document.getElementById('aiResultText').innerText = results[Math.floor(Math.random() * results.length)];
+                goToStep(3);
+                const stream = video.srcObject;
+                stream.getTracks().forEach(track => track.stop());
+            }, 3000);
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        function bookAI() { openModal("AI Recommended Package", "Premium Selection"); }
+
+        // REVIEWS
+        let currentReview = 0;
+        const slides = document.querySelectorAll('.review-slide');
+        setInterval(() => {
+            slides[currentReview].classList.remove('active');
+            currentReview = (currentReview + 1) % slides.length;
+            slides[currentReview].classList.add('active');
+        }, 4000);
+
+        // MODAL & POLICY
+        function openModal(service, price) {
+            document.getElementById("serviceTitle").innerText = service + " - ₹" + price;
+            const slotSelect = document.getElementById("slot");
+            slotSelect.innerHTML = "";
+            for (let hour = 10; hour <= 21; hour++) {
+                let h = hour > 12 ? hour-12 : hour;
+                let ampm = hour >= 12 ? 'PM' : 'AM';
+                slotSelect.innerHTML += `<option>${h}:00 ${ampm}</option><option>${h}:30 ${ampm}</option>`;
+            }
+            document.getElementById("policyModal").style.display = "flex";
+        }
+
+        function confirmBooking() {
+            localStorage.setItem("selectedService", document.getElementById("serviceTitle").innerText);
+            window.location.href = "/booking";
+        }
+    </script>
+</body>
+</html>

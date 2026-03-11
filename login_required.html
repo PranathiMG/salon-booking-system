@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Required | Glow & Grace</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #d9b99b; /* Rose Gold */
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Brightened Cinematic Background */
+            background: linear-gradient(rgba(2, 6, 23, 0.75), rgba(2, 6, 23, 0.75)), 
+                        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        /* --- NAVIGATION (Identical to Home/Login/Register) --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; align-items: center;
+            background: rgba(2, 6, 23, 0.96); z-index: 1000; 
+            border-bottom: 1px solid rgba(217, 185, 155, 0.3);
+        }
+
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 7px; z-index: 1100; margin-right: 30px; }
+        .menu-btn span { display: block; width: 30px; height: 2px; background: var(--primary); transition: 0.4s; }
+
+        .side-nav {
+            position: fixed; top: 0; left: -100%; width: 320px; height: 100vh;
+            background: var(--black); z-index: 1050; transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+            display: flex; flex-direction: column; padding: 120px 50px; gap: 20px;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.8);
+            border-right: 1px solid var(--primary);
+        }
+        .side-nav.active { left: 0; }
+        .close-symbol { position: absolute; top: 35px; right: 40px; font-size: 40px; color: var(--primary); cursor: pointer; }
+        .side-nav a { text-decoration: none; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; }
+        .side-nav a:hover { color: var(--white); padding-left: 10px; }
+
+        .brand-name { font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 2px; font-weight: 700; color: var(--primary); }
+
+        /* --- ALERT BOX --- */
+        .box {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 50px 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            border: 1px solid rgba(217, 185, 155, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .box p {
+            color: #94a3b8;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 35px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            transition: 0.4s;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            background: var(--primary);
+            color: var(--black);
+        }
+
+        .register-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn:hover {
+            background: var(--white);
+            color: var(--black);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(217, 185, 155, 0.2);
+            border-color: var(--white);
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="brand-name">GLOW & GRACE</div>
+    </nav>
+
+    <div class="side-nav" id="sideNav">
+        <div class="close-symbol" onclick="toggleMenu()">&times;</div>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/men_services">Men's Grooming</a>
+        <a href="/women_services">Women's Beauty</a>
+        <a href="/contact">Contact</a>
+        <a href="/review">Reviews</a>
+        <a href="/admin">Admin Panel</a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <h2>Authentication Required</h2>
+        <p>To experience our elite salon services and book your master stylist, please sign in to your account.</p>
+
+        <a href="/login" class="btn login-btn">Sign In</a>
+        <a href="/register" class="btn register-btn">Create Account</a>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        function toggleMenu() { document.getElementById("sideNav").classList.toggle("active"); }
+    </script>
+</body>
+</html>

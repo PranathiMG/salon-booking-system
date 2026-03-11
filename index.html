@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow & Grace | Haute Couture Salon</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #d9b99b; /* Rose Gold */
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            color: #d1d5db; 
+            background: linear-gradient(rgba(2, 6, 23, 0.7), rgba(2, 6, 23, 0.7)), 
+                        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000');
+            background-attachment: fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; align-items: center;
+            background: rgba(2, 6, 23, 0.96); z-index: 1000; 
+            border-bottom: 1px solid rgba(217, 185, 155, 0.3);
+        }
+
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 7px; z-index: 1100; margin-right: 30px; }
+        .menu-btn span { display: block; width: 30px; height: 2px; background: var(--primary); transition: 0.4s; }
+
+        .side-nav {
+            position: fixed; top: 0; left: -100%; width: 320px; height: 100vh;
+            background: var(--black); z-index: 1050; transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+            display: flex; flex-direction: column; padding: 120px 50px; gap: 20px;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.8);
+            border-right: 1px solid var(--primary);
+        }
+        .side-nav.active { left: 0; }
+        .close-symbol { position: absolute; top: 35px; right: 40px; font-size: 40px; color: var(--primary); cursor: pointer; }
+        .side-nav a { text-decoration: none; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; }
+        .side-nav a:hover { color: var(--white); padding-left: 10px; }
+
+        .brand-name { font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 2px; font-weight: 700; color: var(--primary); }
+
+        /* --- HERO --- */
+        .hero { height: 50vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #heroVideo { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; z-index: -2; transform: translate(-50%, -50%); object-fit: cover; filter: brightness(0.6); }
+        .hero-text { text-align: center; z-index: 1; }
+        .hero-text span { color: var(--primary); letter-spacing: 6px; text-transform: uppercase; font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(40px, 7vw, 75px); color: var(--white); line-height: 1; }
+
+        /* --- REDUCED LENGTH IMAGES SECTION --- */
+        .services-section { padding: 60px 10%; text-align: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        
+        .service-card { 
+            position: relative; overflow: hidden; 
+            height: 300px; /* Reduced Height */
+            border-radius: 10px; 
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.5s ease; cursor: pointer;
+        }
+
+        .service-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 15px 30px rgba(217, 185, 155, 0.2); }
+        .service-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s ease; filter: brightness(0.85); }
+        .service-card:hover img { filter: brightness(1.1) scale(1.05); }
+
+        .service-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
+            background: linear-gradient(transparent, rgba(2, 6, 23, 0.95));
+            text-align: left;
+        }
+        .service-overlay h3 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 22px; }
+
+        /* --- SALON AMENITIES SECTION --- */
+        .amenities { padding: 60px 10%; background: rgba(255,255,255,0.02); display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; border-top: 1px solid #111; }
+        .amenity-item { text-align: center; max-width: 250px; }
+        .amenity-item h4 { font-family: 'Playfair Display'; margin-bottom: 5px; color: var(--primary); font-size: 18px; }
+        .amenity-item p { font-size: 12px; color: #aaa; line-height: 1.6; }
+
+        /* --- LOCATION --- */
+        .location { padding: 60px 10%; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+        .map-frame { flex: 1.5; height: 350px; border-radius: 10px; border: 1px solid var(--primary); overflow: hidden; }
+        .info-card { flex: 1; text-align: left; padding: 30px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+
+        footer { padding: 30px; background: var(--black); color: #444; text-align: center; font-size: 11px; letter-spacing: 4px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="brand-name">GLOW & GRACE</div>
+    </nav>
+
+    <div class="side-nav" id="sideNav">
+        <div class="close-symbol" onclick="toggleMenu()">&times;</div>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/men_services">Men's Grooming</a>
+        <a href="/women_services">Women's Beauty</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/staff_dashboard">Staff Dashboard</a>
+        <a href="/contact">Contact</a>
+        <a href="/review">Reviews</a>
+        <a href="/admin">Admin Panel</a>
+        <a href="/logout">Logout</a>
+
+    </div>
+
+    <section class="hero">
+        <video autoplay muted loop playsinline id="heroVideo">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-interior-of-a-modern-and-luxury-hair-salon-34440-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-text" data-aos="fade-up">
+            <span>Artistry & Luxury</span>
+            <h1>Glow & Grace</h1>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="services-grid">
+            <div class="service-card" data-aos="fade-up">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfac4033c8?auto=format&fit=crop&q=80&w=800" alt="Powder">
+                <div class="service-overlay"><h3>Mineral Base</h3></div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=800" alt="Cosmetic">
+                <div class="service-overlay"><h3>Premium Brushes</h3></div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&q=80&w=800" alt="Styling">
+                <div class="service-overlay"><h3>Editorial Hair</h3></div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://images.unsplash.com/photo-1457972851104-4fd469440bf9?auto=format&fit=crop&q=80&w=800" alt="Make Up">
+                <div class="service-overlay"><h3>Luxury Palette</h3></div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+                <img src="https://images.unsplash.com/photo-1512496011931-d41ea46c4831?auto=format&fit=crop&q=80&w=800" alt="Face Care">
+                <div class="service-overlay"><h3>Hydra Glow</h3></div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+                <img src="https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&q=80&w=800" alt="Oil">
+                <div class="service-overlay"><h3>Organic Elixir</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="amenities" data-aos="fade-up">
+        <div class="amenity-item">
+            <h4>Valet Parking</h4>
+            <p>Seamless arrival with our dedicated elite parking concierge.</p>
+        </div>
+        <div class="amenity-item">
+            <h4>Private Suites</h4>
+            <p>Discreet luxury spaces for high-profile grooming requirements.</p>
+        </div>
+        <div class="amenity-item">
+            <h4>Champagne Bar</h4>
+            <p>Curated refreshments served while our artisans craft your look.</p>
+        </div>
+    </section>
+
+    <section class="location" id="location">
+        <div class="map-frame" data-aos="fade-right">
+            <iframe width="100%" height="100%" frameborder="0" src="https://www.openstreetmap.org/export/embed.html?bbox=77.5800,12.9600,77.6100,12.9900&layer=mapnik&marker=12.9750,77.5950"></iframe>
+        </div>
+        <div class="info-card" data-aos="fade-left">
+            <h3 style="color: white; margin-bottom: 5px;">Manhattan Studio</h3>
+            <p>Luxury Lane, Bengaluru</p>
+            <p style="margin-top: 20px;"><b>Contact:</b> +91 98765 43210</p>
+        </div>
+    </section>
+
+    <footer>&copy; 2026 GLOW & GRACE — ARTISTRY • STYLE • CONFIDENCE</footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        function toggleMenu() { document.getElementById("sideNav").classList.toggle("active"); }
+    </script>
+</body>
+</html>

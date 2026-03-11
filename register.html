@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Glow & Grace Luxury Salon</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #d9b99b; /* Rose Gold */
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Matching Brightened Background */
+            background: linear-gradient(rgba(2, 6, 23, 0.75), rgba(2, 6, 23, 0.75)), 
+                        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            padding: 80px 20px; /* Space for navbar */
+        }
+
+        /* --- NAVIGATION (Identical to Home/Login) --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; align-items: center;
+            background: rgba(2, 6, 23, 0.96); z-index: 1000; 
+            border-bottom: 1px solid rgba(217, 185, 155, 0.3);
+        }
+
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 7px; z-index: 1100; margin-right: 30px; }
+        .menu-btn span { display: block; width: 30px; height: 2px; background: var(--primary); transition: 0.4s; }
+
+        .side-nav {
+            position: fixed; top: 0; left: -100%; width: 320px; height: 100vh;
+            background: var(--black); z-index: 1050; transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+            display: flex; flex-direction: column; padding: 120px 50px; gap: 20px;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.8);
+            border-right: 1px solid var(--primary);
+        }
+        .side-nav.active { left: 0; }
+        .close-symbol { position: absolute; top: 35px; right: 40px; font-size: 40px; color: var(--primary); cursor: pointer; }
+        .side-nav a { text-decoration: none; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; }
+        .side-nav a:hover { color: var(--white); padding-left: 10px; }
+
+        .brand-name { font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 2px; font-weight: 700; color: var(--primary); }
+
+        /* --- REGISTER CARD --- */
+        .register-container {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid rgba(217, 185, 155, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .register-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--white);
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            color: var(--primary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.4s;
+        }
+
+        button:hover {
+            background: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(217, 185, 155, 0.3);
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="brand-name">GLOW & GRACE</div>
+    </nav>
+
+    <div class="side-nav" id="sideNav">
+        <div class="close-symbol" onclick="toggleMenu()">&times;</div>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/men_services">Men's Grooming</a>
+        <a href="/women_services">Women's Beauty</a>
+        <a href="/contact">Contact</a>
+        <a href="/review">Reviews</a>
+        <a href="/admin">Admin Panel</a>
+    </div>
+
+    <div class="register-container" data-aos="fade-up">
+        <h2>Register</h2>
+        <span class="tagline">Join the Elite Club</span>
+
+        <form method="POST" action="/register">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Create Password" required>
+            <button type="submit">Create Account</button>
+        </form>
+
+        <div class="footer-links">
+            Already registered? <a href="/login">Login here</a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        function toggleMenu() { document.getElementById("sideNav").classList.toggle("active"); }
+    </script>
+</body>
+</html>

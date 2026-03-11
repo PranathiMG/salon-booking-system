@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Booking | Glow & Grace</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #d9b99b; /* Rose Gold */
+            --navy: #0f172a;
+            --black: #020617;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.8)), 
+                        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+        }
+
+        /* --- BOOKING CONTAINER --- */
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(217, 185, 155, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h2 { font-family: 'Playfair Display', serif; color: var(--white); margin-bottom: 5px; }
+        .tagline { color: var(--primary); font-size: 11px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 30px; display: block; }
+
+        label { display: block; text-align: left; font-size: 12px; color: #94a3b8; margin-top: 15px; margin-left: 5px; }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background: var(--black);
+            border: 1px solid rgba(217, 185, 155, 0.3);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input[readonly] { color: var(--primary); font-weight: 600; border-color: rgba(217, 185, 155, 0.1); }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: 0.4s;
+        }
+
+        button:hover {
+            background: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(217, 185, 155, 0.3);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container" data-aos="zoom-in">
+    <h2>Secure Booking</h2>
+    <span class="tagline">Glow & Grace Elite</span>
+
+    <label>Customer Name</label>
+    <input type="text" id="customer" placeholder="Enter your name">
+
+    <label>Selected Service</label>
+    <input type="text" id="service" readonly>
+
+    <label>Choose Your Specialist</label>
+    <select id="staff">
+        </select>
+
+    <label>Preferred Time Slot</label>
+    <select id="slot">
+        <option>10:00 AM</option>
+        <option>10:30 AM</option>
+        <option>11:00 AM</option>
+        <option>11:30 AM</option>
+        <option>12:00 PM</option>
+        <option>12:30 PM</option>
+        <option>01:00 PM</option>
+        <option>01:30 PM</option>
+        <option>02:00 PM</option>
+        <option>02:30 PM</option>
+        <option>03:00 PM</option>
+        <option>03:30 PM</option>
+        <option>04:00 PM</option>
+        <option>04:30 PM</option>
+        <option>05:00 PM</option>
+        <option>05:30 PM</option>
+        <option>06:00 PM</option>
+        <option>06:30 PM</option>
+        <option>07:00 PM</option>
+        <option>07:30 PM</option>
+        <option>08:00 PM</option>
+        <option>08:30 PM</option>
+        <option>09:00 PM</option>
+        <option>09:30 PM</option>
+        <option>10:00 PM</option>
+    </select>
+
+    <button onclick="goToPayment()">Proceed to Payment</button>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+
+    // 1. Filter Staff based on which dashboard sent them here
+    function setupBookingPage() {
+        const staffSelect = document.getElementById("staff");
+        const serviceField = document.getElementById("service");
+        
+        // Check which service was stored in localStorage
+        const service = localStorage.getItem("selectedService") || localStorage.getItem("service");
+        const price = localStorage.getItem("selectedPrice") || localStorage.getItem("price");
+        
+        serviceField.value = service + " - ₹" + price;
+
+        // Logic to determine if user came from Women's or Men's dashboard
+        // We detect this by checking the price or service name if they are unique
+        // Or we assume "Women" if the service matches the women's list.
+        const womenServices = [
+            'Precision Haircut', 'Deep Conditioning Wash', 'Signature Styling', 
+            'Silk Straightening', 'Organic Smoothening', 'Couture Coloring', 
+            'Ozone Hair Spa', 'Radiance Facial', 'Ultra Cleanup', 
+            'Herbal Bleach', 'Precision Threading', 'Honey Waxing', 
+            'Spa Manicure', 'Spa Pedicure', 'Elite Bridal Makeup', 'Luxury Nail Artistry'
+        ];
+
+        staffSelect.innerHTML = ""; // Clear existing
+
+        if (womenServices.includes(service)) {
+            // SHOW ONLY WOMEN STAFF
+            const womenStaff = ["Priya", "Sneha", "Megha"];
+            womenStaff.forEach(name => {
+                let opt = document.createElement("option");
+                opt.text = name + " (Specialist)";
+                opt.value = name;
+                staffSelect.add(opt);
+            });
+        } else {
+            // SHOW ONLY MEN STAFF
+            const menStaff = ["Kiran", "Rahul", "Ajay"];
+            menStaff.forEach(name => {
+                let opt = document.createElement("option");
+                opt.text = name + " (Expert)";
+                opt.value = name;
+                staffSelect.add(opt);
+            });
+        }
+    }
+
+    window.onload = setupBookingPage;
+
+    function goToPayment() {
+        const customer = document.getElementById("customer").value;
+        const staff = document.getElementById("staff").value;
+        const time = document.getElementById("slot").value;
+        const service = document.getElementById("service").value;
+
+        if (customer == "") {
+            alert("Please enter customer name");
+            return;
+        }
+
+        // Save details for payment page
+        localStorage.setItem("customer", customer);
+        localStorage.setItem("staff", staff);
+        localStorage.setItem("time", time);
+        
+        window.location.href = "/payment";
+    }
+</script>
+
+</body>
+</html>

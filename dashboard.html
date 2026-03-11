@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Customer Dashboard</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;}
+header{background:#ff4081;color:white;padding:20px;text-align:center;}
+header h1{margin:0;}
+.container{width:90%;margin:auto;padding:20px;}
+.card{background:white;padding:15px;margin:15px;border-radius:10px;display:inline-block;width:200px;vertical-align:top;}
+button{background:#ff4081;color:white;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;}
+button:hover{background:#e73370;}
+select,input{width:100%;padding:5px;margin:5px 0;}
+h2,h3{margin:10px 0;}
+#popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:30px;border:2px solid #ff4081;border-radius:10px;text-align:center;z-index:1000;}
+</style>
+<script>
+// Double booking popup
+function showPopup(){document.getElementById("popup").style.display="block";}
+function closePopup(){document.getElementById("popup").style.display="none";}
+
+// Update booking charge based on selected service
+function updateCharge(){
+    var sel = document.getElementById("service");
+    var charge = sel.options[sel.selectedIndex].dataset.charge;
+    document.getElementById("booking_charge").value = charge;
+}
+
+// Book appointment via AJAX
+function bookAppointment(){
+    var staff = document.getElementById("staff").value;
+    var service = document.getElementById("service").value;
+    var date = document.getElementById("date").value;
+    var time = document.getElementById("time").value;
+    var payment = document.getElementById("payment").value;
+    var booking_charge = document.getElementById("booking_charge").value;
+
+    if(!staff || !service || !date || !time || !payment){
+        alert("Please fill all fields!");
+        return;
+    }
+
+    fetch('/book',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:`staff_id=${staff}&service_id=${service}&date=${date}&time=${time}&payment_type=${payment}&booking_charge=${booking_charge}`
+    }).then(res=>res.text())
+    .then(data=>{
+        if(data.includes("already booked")){
+            showPopup();
+        } else {
+            alert(data);
+            window.location.reload();
+        }
+    })
+}
+</script>
+</head>
+<body>
+<header>
+<h1>Welcome, {{session['user_name']}}</h1>
+</header>
+<div class="container">
+<h2>Book an Appointment</h2>
+<div style="background:white;padding:20px;border-radius:10px;">
+
+<label>Select Service:</label>
+<select id="service" onchange="updateCharge()">
+{% for s in services %}
+<option value="{{s['id']}}" data-charge="{{s['price']}}">{{s['service_name']}} (₹{{s['price']}}/{{s['duration']}}min)</option>
+{% endfor %}
+</select>
+
+<label>Select Staff:</label>
+<select id="staff">
+{% for s in men_staff %}
+<option value="{{s['id']}}">{{s['name']}} (Men)</option>
+{% endfor %}
+{% for s in women_staff %}
+<option value="{{s['id']}}">{{s['name']}} (Women)</option>
+{% endfor %}
+</select>
+
+<label>Date:</label>
+<input type="date" id="date" min="{{current_date}}">
+
+<label>Time:</label>
+<input type="time" id="time">
+
+<label>Payment Type:</label>
+<select id="payment">
+<option value="online">Online</option>
+<option value="offline">Offline</option>
+</select>
+
+<input type="hidden" id="booking_charge" value="0">
+
+<button onclick="bookAppointment()">Book Appointment</button>
+</div>
+
+<h2>Your Booking History</h2>
+<div>
+{% for b in bookings %}
+<div class="card">
+<h3>{{b['service_name']}}</h3>
+<p>Staff: {{b['staff_name']}}</p>
+<p>Date: {{b['date']}}</p>
+<p>Time: {{b['time']}}</p>
+<p>Status: {{b['status']}}</p>
+<p>Booking Charge: ₹{{b['booking_charge']}}</p>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<div id="popup">
+<p>Sorry! This staff is already booked at this slot.</p>
+<button onclick="closePopup()">Close</button>
+</div>
+</body>
+</html>
