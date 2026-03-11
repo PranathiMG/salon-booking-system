@@ -1,0 +1,37 @@
+Folder PATH listing for volume WINDOWS
+Volume serial number is E801-0000
+C:.
+|   app.py
+|   structure.txt
+|   
++---js
+|       booking.js
+|       payment.js
+|       reminder.js
+|       services.js
+|       
++---static
+|   +---images
+|   |       haircut.jpg.jfif
+|   |       
+|   \---videos
+|           barber.mp4.mp4
+|           salon.mp4.mp4
+|           
+\---templates
+        admin_dashboard.html
+        booking.html
+        contact.html
+        dashboard.html
+        dashboard_men.html
+        dashboard_women.html
+        gallery.html
+        history.html
+        index.html
+        login.html
+        login_required.html
+        payment.html
+        register.html
+        review.html
+        staff_dashboard.html
+        
