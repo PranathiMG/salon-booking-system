@@ -22,7 +22,7 @@ db = mysql.connector.connect(
 cursor = db.cursor(dictionary=True)
 
 #-------RAZORPAY---------------
-razorpay_client = razorpay.Client(auth=("rzp_test_SPAZS8RUI3LyK3","ji7GTXEPsyqBZeC7qWKlfYqK"))
+razorpay_client = razorpay.Client(auth=("rzp_test_xxxxxxx","xxxxxxx"))#PUT YOUR KEY ID AND KEY SECRECT CODE
 # -----------------------------
 # HOME PAGE
 # -----------------------------
@@ -533,4 +533,5 @@ def history(name):
 # RUN APP
 # -----------------------------
 if __name__ == "__main__":
+
     app.run(debug=True)
