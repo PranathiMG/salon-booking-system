@@ -267,36 +267,6 @@ def book():
 
     return "Booking Successful!"
 
-
-'''#--------BOOK LOGIC -------------
-
-@app.route('/booking')
-def booking():
-
-    staff = request.args.get("staff")
-    date = request.args.get("date")
-
-    all_slots = [
-        "10:00 AM","10:30 AM","11:00 AM","11:30 AM",
-        "12:00 PM","01:00 PM","02:00 PM","03:00 PM","04:00 PM"
-    ]
-
-    cursor = db.cursor()
-
-    cursor.execute(
-        "SELECT booking_time FROM bookings WHERE staff_name=%s AND booking_date=%s",
-        (staff,date)
-    )
-
-    booked = [row[0] for row in cursor.fetchall()]
-
-    available = [slot for slot in all_slots if slot not in booked]
-
-    return render_template("booking.html",
-                           slots=available,
-                           staff=staff,
-                        date=date)
-'''
 #---------ADD STAFF-------------
 from flask import request, jsonify
 
@@ -535,3 +505,4 @@ def history(name):
 if __name__ == "__main__":
 
     app.run(debug=True)
+
